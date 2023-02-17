@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "TelegramBotWebHook": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7003",
+      "environmentVariables": {
+        "Token": "6058383219:AAH8O4pcNxHzQ6jG9HntuYJ_U3kU58WE5IE"
+      }
+    }
+  }
+}
