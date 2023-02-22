@@ -48,7 +48,7 @@ namespace TelegramBotWebHook.ServiceCosmosDB
         {
             MessageInfo item = new MessageInfo
             {
-                Id = update.Message.MessageId,
+                Id = $"{update.Message.MessageId}",
                 Update_id = update.Id,
                 Message_text = update.Message.Text,
                 UserId = update.Message.From.Id,

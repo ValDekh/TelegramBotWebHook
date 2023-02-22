@@ -9,7 +9,7 @@ namespace TelegramBotWebHook.ServiceCosmosDB
 {
     internal class MessageInfo
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public int Update_id { get; set; }
         public string Message_text { get; set; }
         public long UserId { get; set; }
