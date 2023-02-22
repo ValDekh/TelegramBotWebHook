@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Telegram.Bot.Types;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
+using TelegramBotWebHook.ServiceCosmosDB;
 
 namespace TelegramBotWebHook
 {
@@ -21,6 +22,7 @@ namespace TelegramBotWebHook
             ILogger log)
         {
             log.LogInformation("Invoke telegrame Update fuction");
+           await CosmosDBSetter.Creator();
 
             // string name = req.Query["name"];
             //var token = "6058383219:AAH8O4pcNxHzQ6jG9HntuYJ_U3kU58WE5IE";
@@ -28,6 +30,8 @@ namespace TelegramBotWebHook
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var data = JsonConvert.DeserializeObject<Update>(requestBody);
+            await CosmosDBSetter.AddItemsToContainerAsync(data, data.Id);
+
             // name = name ?? data?.name;
             if (data.Type == UpdateType.Message)
             {
