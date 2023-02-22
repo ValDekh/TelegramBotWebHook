@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ namespace TelegramBotWebHook.ServiceCosmosDB
 {
     internal class MessageInfo
     {
+        [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
         public string Update_id { get; set; }
         public int Message_id { get; set; }
