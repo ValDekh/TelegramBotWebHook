@@ -21,13 +21,13 @@ namespace TelegramBotWebHook.ServiceCosmosDB
         private static IConfiguration _appConfig;
         public CosmosDBSetter(IConfiguration appConfig)
         {
-           _appConfig= appConfig;
+            _appConfig = appConfig;
         }
 
         private static void ClientInitializer()
         {
-            _client = new CosmosClient($"{_appConfig["COSMOS_ENDPOINT"]}",
-                $"{_appConfig["COSMOS_KEY"]}");
+            _client = new CosmosClient($"{_appConfig["AppConfig:COSMOS_ENDPOINT"]}",
+                $"{_appConfig["AppConfig:COSMOS_KEY"]}");
         }
 
         private static async Task CreateDbAsync()
@@ -56,17 +56,22 @@ namespace TelegramBotWebHook.ServiceCosmosDB
             {
                 Id = Guid.NewGuid().ToString(),
                 Update_id = $"{update.Id}",
-                Message_id=update.Message.MessageId,
+                Message_id = update.Message.MessageId,
                 Message_text = update.Message.Text,
                 UserId = update.Message.From.Id,
                 Username = update.Message.From.Username,
             };
 
-            // <create_item> 
-            MessageInfo createdItem = await _container.CreateItemAsync<MessageInfo>(
-                item: item,
-                partitionKey: new PartitionKey($"{item.Update_id}")
-            );
+            try
+            {
+                MessageInfo createdItem = await _container.CreateItemAsync<MessageInfo>(
+                                item: item,
+                                partitionKey: new PartitionKey($"{item.Update_id}"));
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Bad connection");
+            }
 
 
         }
