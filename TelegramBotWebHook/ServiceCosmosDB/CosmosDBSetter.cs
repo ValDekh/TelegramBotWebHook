@@ -1,4 +1,5 @@
 ﻿using Microsoft.Azure.Cosmos;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,17 +13,21 @@ using Container = Microsoft.Azure.Cosmos.Container;
 
 namespace TelegramBotWebHook.ServiceCosmosDB
 {
-    internal static class CosmosDBSetter
+    internal class CosmosDBSetter : ICosmosDBSetter
     {
-        private static readonly CosmosClient _client;
+        private static CosmosClient _client;
         private static Database _database;
         private static Container _container;
-        // private static
-        static CosmosDBSetter()
+        private static IConfiguration _appConfig;
+        public CosmosDBSetter(IConfiguration appConfig)
         {
-            _client = new CosmosClient(
-                "https://localhost:8081",
-                 "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==");
+           _appConfig= appConfig;
+        }
+
+        private static void ClientInitializer()
+        {
+            _client = new CosmosClient($"{_appConfig["COSMOS_ENDPOINT"]}",
+                $"{_appConfig["COSMOS_KEY"]}");
         }
 
         private static async Task CreateDbAsync()
@@ -39,12 +44,13 @@ namespace TelegramBotWebHook.ServiceCosmosDB
 
         public static async Task Creator()
         {
+            ClientInitializer();
             await CreateDbAsync();
             await CreateContainerAsync();
         }
 
 
-        public static async Task AddItemsToContainerAsync(Update update, int partitionKey)
+        public static async Task AddItemsToContainerAsync(Update update)
         {
             MessageInfo item = new MessageInfo
             {
@@ -59,7 +65,7 @@ namespace TelegramBotWebHook.ServiceCosmosDB
             // <create_item> 
             MessageInfo createdItem = await _container.CreateItemAsync<MessageInfo>(
                 item: item,
-                partitionKey: new PartitionKey($"{partitionKey}")
+                partitionKey: new PartitionKey($"{item.Update_id}")
             );
 
 
