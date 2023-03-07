@@ -11,18 +11,29 @@ using Telegram.Bot.Types;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 using TelegramBotWebHook.ServiceCosmosDB;
+using Microsoft.Extensions.Configuration;
 
 namespace TelegramBotWebHook
 {
     public class TelegramBotWebHook
     {
+        private readonly IConfiguration _appConfog;
+        private readonly ICosmosDBSetter _cosmosDBSetter;
+
+        public TelegramBotWebHook(IConfiguration configuration, ICosmosDBSetter cosmosDBSetter)
+        {
+            _appConfog = configuration;
+            _cosmosDBSetter = cosmosDBSetter;
+        }
+
+
         [FunctionName("TelegramBotWebHook")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
             ILogger log)
         {
             log.LogInformation("Invoke telegrame Update fuction");
-           await CosmosDBSetter.Creator();
+            await CosmosDBSetter.Creator();
 
             // string name = req.Query["name"];
             //var token = "6058383219:AAH8O4pcNxHzQ6jG9HntuYJ_U3kU58WE5IE";
@@ -30,7 +41,7 @@ namespace TelegramBotWebHook
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var data = JsonConvert.DeserializeObject<Update>(requestBody);
-            await CosmosDBSetter.AddItemsToContainerAsync(data, data.Id);
+            await CosmosDBSetter.AddItemsToContainerAsync(data);
 
             // name = name ?? data?.name;
             if (data.Type == UpdateType.Message)
@@ -56,5 +67,5 @@ namespace TelegramBotWebHook
     }
 
 
-   
+
 }
