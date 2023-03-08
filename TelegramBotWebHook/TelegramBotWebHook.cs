@@ -17,13 +17,14 @@ namespace TelegramBotWebHook
 {
     public class TelegramBotWebHook
     {
-        private readonly IConfiguration _appConfog;
-        private readonly ICosmosDBSetter _cosmosDBSetter;
+        private static IConfiguration AppConfig { get; set; }
+        private static ICosmosDBSetter CosmosDBSetter { get; set; }
+        
 
         public TelegramBotWebHook(IConfiguration configuration, ICosmosDBSetter cosmosDBSetter)
         {
-            _appConfog = configuration;
-            _cosmosDBSetter = cosmosDBSetter;
+            AppConfig = configuration;
+            CosmosDBSetter = cosmosDBSetter;
         }
 
 
@@ -56,7 +57,7 @@ namespace TelegramBotWebHook
 
         private static TelegramBotClient GetTelegramBotClient()
         {
-            var token = Environment.GetEnvironmentVariable("token", EnvironmentVariableTarget.Process);
+            var token = AppConfig["AppConfig:COSMOS_ENDPOINT"];
             if (token is null)
             {
                 throw new ArgumentException("Can't get a token");
