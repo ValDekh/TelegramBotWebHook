@@ -13,7 +13,7 @@ using Container = Microsoft.Azure.Cosmos.Container;
 
 namespace TelegramBotWebHook.ServiceCosmosDB
 {
-    internal class CosmosDBSetter : ICosmosDBSetter
+    public class CosmosDBSetter : ICosmosDBSetter
     {
         private static CosmosClient _client;
         private static Database _database;

@@ -11,7 +11,8 @@ namespace TelegramBotWebHook
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-           // builder.Services.AddHttpClient();
+            
+            //builder.Services.AddHttpClient();
             builder.Services.AddScoped<ICosmosDBSetter, CosmosDBSetter>();
         }
 
