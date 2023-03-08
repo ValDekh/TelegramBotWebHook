@@ -7,10 +7,10 @@ using Telegram.Bot.Types;
 
 namespace TelegramBotWebHook.ServiceCosmosDB
 {
-   interface ICosmosDBSetter
+    public interface ICosmosDBSetter
     {
-         async Task Creator() { }
-        static async Task AddItemsToContainerAsync(Update update) { }
+        async Task Creator() { }
+        async Task AddItemsToContainerAsync(Update update) { }
         private static async Task CreateDbAsync() { }
 
         private static async Task CreateContainerAsync() { }

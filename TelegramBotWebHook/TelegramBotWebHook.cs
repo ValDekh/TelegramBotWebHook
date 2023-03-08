@@ -57,7 +57,7 @@ namespace TelegramBotWebHook
 
         private static TelegramBotClient GetTelegramBotClient()
         {
-            var token = AppConfig["AppConfig:COSMOS_ENDPOINT"];
+            var token = AppConfig["AppConfig:Token"];
             if (token is null)
             {
                 throw new ArgumentException("Can't get a token");
