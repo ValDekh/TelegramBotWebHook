@@ -39,7 +39,7 @@ namespace TelegramBotWebHook.ServiceCosmosDB
 
         private static async Task CreateContainerAsync()
         {
-            _container = await _database.CreateContainerIfNotExistsAsync("receivedMessages", "/Update_id");
+            _container = await _database.CreateContainerIfNotExistsAsync("receivedMessages", "/MessageContainer_id");
         }
 
         public static async Task Creator()
@@ -55,7 +55,7 @@ namespace TelegramBotWebHook.ServiceCosmosDB
             MessageInfo item = new MessageInfo
             {
                 Id = Guid.NewGuid().ToString(),
-                Update_id = $"{update.Id}",
+                MessageContainer_id = Guid.NewGuid().ToString(),
                 Message_id = update.Message.MessageId,
                 Message_text = update.Message.Text,
                 UserId = update.Message.From.Id,
@@ -66,7 +66,7 @@ namespace TelegramBotWebHook.ServiceCosmosDB
             {
                 MessageInfo createdItem = await _container.CreateItemAsync<MessageInfo>(
                                 item: item,
-                                partitionKey: new PartitionKey($"{item.Update_id}"));
+                                partitionKey: new PartitionKey($"{item.MessageContainer_id}"));
             }
             catch (Exception)
             {

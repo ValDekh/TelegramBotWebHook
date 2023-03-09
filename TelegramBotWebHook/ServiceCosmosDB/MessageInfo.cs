@@ -12,7 +12,7 @@ namespace TelegramBotWebHook.ServiceCosmosDB
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
-        public string Update_id { get; set; }
+        public string MessageContainer_id { get; set; }
         public int Message_id { get; set; }
         public string Message_text { get; set; }
         public long UserId { get; set; }
