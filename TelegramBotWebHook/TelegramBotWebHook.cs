@@ -21,10 +21,10 @@ namespace TelegramBotWebHook
         private static ICosmosDBSetter CosmosDBSetter { get; set; }
         
 
-        public TelegramBotWebHook(IConfiguration configuration)
+        public TelegramBotWebHook(IConfiguration configuration, ICosmosDBSetter dbSetter)
         {
             AppConfig = configuration;
-            CosmosDBSetter = new CosmosDBSetter(configuration);
+            CosmosDBSetter = dbSetter;
         }
 
 
